@@ -1,0 +1,10 @@
+expand [axis: "horiz"]
+  container [height: 5]
+    border [foreground: SMD_THEME.fg_normal, border_style: SMD_STYLE.border]
+      vstack
+        text title ":" 
+        spacer
+        hstack
+          spacer
+          text value " (" legend ")"
+          spacer

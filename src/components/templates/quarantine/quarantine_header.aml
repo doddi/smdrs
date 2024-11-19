@@ -1,0 +1,13 @@
+container [height: 3]
+  border [foreground: SMD_THEME.fg_normal, border_style: SMD_STYLE.border]
+    hstack
+      expand [factor: 1]
+        text "Threat"
+      expand [factor: 2]
+        text "Policy Name"
+      expand [factor: 3]
+        text "Quarantine Time"
+      expand [factor: 4]
+        text "Component"
+      expand [factor: 2]
+        text "Repository"

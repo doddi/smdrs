@@ -1,0 +1,16 @@
+let rating = ["🟦", "🟦", "🟩", "🟩", "🟩", "🟨", "🟨", "🟨","🟧", "🟧", "🟥"]
+
+container [height: 2]
+  hstack
+    expand [factor: 1]
+      padding [left: 1]
+        text rating[threat] threat
+    expand [factor: 2]
+      text policy 
+    expand [factor: 3]
+      text quarantine_time
+    expand [factor: 4]
+      text component_name
+    expand [factor: 2]
+      padding [right: 1]
+        text repository_name

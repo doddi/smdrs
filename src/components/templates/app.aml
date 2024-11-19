@@ -1,0 +1,15 @@
+let SMD_STYLE = {
+  border: "╭─╮│╯─╰│",
+}
+
+let SMD_THEME = {
+  fg_normal: "#666666"
+}
+
+vstack
+  @metric_dashboard
+  container [height: 3]
+  @quarantine_table
+  spacer
+
+

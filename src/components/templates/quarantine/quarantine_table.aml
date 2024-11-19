@@ -1,0 +1,9 @@
+@titled_border {title: "Components Actively in Quarantine"}
+  $children
+    vstack
+      @quarantine_header
+      border
+        vstack
+          @quarantine_row { threat: 10, policy: "Security-Malicious", quarantine_time: "2024-11-19 15:22:01", component_name: "js-yaml : 3.12.0", repository_name: "npm.js-proxy" }
+          @quarantine_row { threat: 7, policy: "Security-Medium", quarantine_time: "2024-11-18 15:22:02", component_name: "org.springframework : spring-web : 5.3.22", repository_name: "maven-central" }
+          @quarantine_row { threat: 1, policy: "Architecture", quarantine_time: "2024-11-18 15:22:02", component_name: "org.springframework : spring-web : 5.3.22", repository_name: "maven-central" }
