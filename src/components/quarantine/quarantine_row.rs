@@ -19,7 +19,7 @@ impl Component for QuarantineRow {
 pub(crate) fn register(runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>) -> anyhow::Result<()> {
     runtime_builder.register_prototype(
         "quarantine_row",
-        "src/components/templates/quarantine/quarantine_row.aml",
+        "src/templates/quarantine/quarantine_row.aml",
         QuarantineRow::default,
         || (),
     )?;

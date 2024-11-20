@@ -2,13 +2,9 @@ use anathema::{component::Component, prelude::*, runtime::RuntimeBuilder};
 
 #[derive(Default)]
 #[allow(dead_code)]
-struct MetricCard {
-    title: String,
-    value: u64,
-    legend: String,
-}
+struct PolicyRow {}
 
-impl Component for MetricCard {
+impl Component for PolicyRow {
     type State = ();
 
     type Message = ();
@@ -16,9 +12,9 @@ impl Component for MetricCard {
 
 pub(crate) fn register(runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>) -> anyhow::Result<()> {
     runtime_builder.register_prototype(
-        "metric_card",
-        "src/templates/metrics/metric_card.aml",
-        MetricCard::default,
+        "policy_row",
+        "src/templates/configuration/policy/policy_row.aml",
+        PolicyRow::default,
         || (),
     )?;
     Ok(())

@@ -11,7 +11,7 @@ impl Component for QuarantineHeader {
 pub(crate) fn register(runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>) -> anyhow::Result<()> {
     runtime_builder.register_component(
         "quarantine_header",
-        "src/components/templates/quarantine/quarantine_header.aml",
+        "src/templates/quarantine/quarantine_header.aml",
         QuarantineHeader {},
         (),
     )?;

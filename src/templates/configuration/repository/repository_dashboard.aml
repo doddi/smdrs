@@ -1,0 +1,8 @@
+@titled_border { title: "Repository Configuration" }
+  $children
+    hstack
+      container [width: 50]
+        @repository_manager_list
+      spacer
+      @repository_list
+      spacer

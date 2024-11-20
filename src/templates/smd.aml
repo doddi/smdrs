@@ -4,9 +4,13 @@ let SMD_STYLE = {
 
 let SMD_THEME = {
   fg_normal: "#666666"
+  menu_highlight_bg: "#0000EE"
+  menu_normal_bg: "#000000"
 }
 
 vstack
+  @repository_dashboard
+  container [height: 3]
   @metric_dashboard
   container [height: 3]
   @quarantine_table

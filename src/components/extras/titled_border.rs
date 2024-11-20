@@ -14,7 +14,7 @@ impl Component for TitledBorder {
 pub(crate) fn register(runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>) -> anyhow::Result<()> {
     runtime_builder.register_prototype(
         "titled_border",
-        "src/components/templates/titled_border.aml",
+        "src/templates/extras/titled_border.aml",
         || TitledBorder {
             title: "".to_string(),
         },

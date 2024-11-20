@@ -1,0 +1,8 @@
+if active == true
+  hstack [background: SMD_THEME.menu_highlight_bg]
+    text " " description
+    spacer
+else 
+  hstack [background: SMD_THEME.menu_normal_bg]
+    text " " description
+    spacer

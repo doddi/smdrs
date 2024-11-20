@@ -3,7 +3,7 @@ use anathema::{
     runtime::{Runtime, RuntimeBuilder},
 };
 
-use crate::components::{self, metrics};
+use crate::components::{self};
 
 pub(super) struct Application {}
 
@@ -19,7 +19,7 @@ impl Application {
             .hide_cursor()
             .finish()?;
 
-        let mut runtime_builder = Runtime::builder(Document::new("@app"), tui);
+        let mut runtime_builder = Runtime::builder(Document::new("@smd"), tui);
         self.register_components(&mut runtime_builder)?;
         let mut runtime = runtime_builder.finish()?;
         runtime.run();
@@ -31,15 +31,7 @@ impl Application {
         &self,
         runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>,
     ) -> anyhow::Result<()> {
-        components::app::register(runtime_builder)?;
-        components::titled_border::register(runtime_builder)?;
-        components::quarantine::quarantine_table::register(runtime_builder)?;
-        components::quarantine::quarantine_header::register(runtime_builder)?;
-        components::quarantine::quarantine_row::register(runtime_builder)?;
-
-        components::metrics::metric_card::register(runtime_builder)?;
-        components::metrics::metric_dashboard::register(runtime_builder)?;
-
+        components::smd::register(runtime_builder)?;
         Ok(())
     }
 }
