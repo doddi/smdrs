@@ -1,5 +1,5 @@
 mod configuration;
 mod extras;
 mod metrics;
-mod quarantine;
+pub(crate) mod quarantine;
 pub(super) mod smd;

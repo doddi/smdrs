@@ -12,6 +12,10 @@ impl Component for MetricCard {
     type State = ();
 
     type Message = ();
+
+    fn accept_focus(&self) -> bool {
+        false
+    }
 }
 
 pub(crate) fn register(runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>) -> anyhow::Result<()> {

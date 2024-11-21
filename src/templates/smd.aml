@@ -9,8 +9,8 @@ let SMD_THEME = {
 }
 
 vstack
-  @repository_dashboard
-  container [height: 3]
+//  @repository_dashboard
+//  container [height: 3]
   @metric_dashboard
   container [height: 3]
   @quarantine_table

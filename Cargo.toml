@@ -7,4 +7,9 @@ edition = "2021"
 anathema = { git = "https://github.com/togglebyte/anathema/", branch = "main" }
 clap = { version = "4.5.21", features = ["env", "derive"] }
 tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.9", features = ["env-filter"] }
 anyhow = "1.0.93"
+reqwest = { version = "0.12.9", features = ["json", "blocking"] }
+serde = { version = "1.0.215", features = ["derive"] }
+serde_json = "1.0.133"
+smol = "2.0.2"

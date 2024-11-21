@@ -1,9 +1,11 @@
 mod application;
 mod components;
+mod core;
 mod logging;
 
 use crate::logging::LogLevel;
 use clap::Parser;
+use tracing::trace;
 
 #[derive(Debug, Parser)]
 struct Args {
@@ -15,6 +17,7 @@ fn main() -> anyhow::Result<()> {
     let args = Args::parse();
 
     logging::setup_logging(args.log_level);
+    trace!("logging configured");
 
     // TODO Setup puffin
 
