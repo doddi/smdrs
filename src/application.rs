@@ -32,9 +32,7 @@ impl Application {
 
         let mut runtime_builder = Runtime::builder(Document::new("@smd"), tui);
 
-        let mut component_bucket = ComponentBucket {
-            quarantine_table: None,
-        };
+        let mut component_bucket = ComponentBucket::new();
 
         self.register_components(&mut runtime_builder, tx, &mut component_bucket)?;
 

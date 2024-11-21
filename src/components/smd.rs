@@ -23,7 +23,7 @@ pub(crate) fn register(
     runtime_builder.register_component("smd", "src/templates/smd.aml", App {}, ())?;
     extras::register(runtime_builder)?;
     quarantine::register(runtime_builder, tx.clone(), component_bucket)?;
-    metrics::register(runtime_builder)?;
+    metrics::register(runtime_builder, tx.clone(), component_bucket)?;
     configuration::register(runtime_builder)?;
 
     Ok(())

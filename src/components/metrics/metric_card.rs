@@ -1,5 +1,9 @@
 use anathema::{component::Component, prelude::*, runtime::RuntimeBuilder};
 
+use self::component_bucket::ComponentBucket;
+
+use super::component_bucket;
+
 #[derive(Default)]
 #[allow(dead_code)]
 struct MetricCard {
@@ -18,7 +22,10 @@ impl Component for MetricCard {
     }
 }
 
-pub(crate) fn register(runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>) -> anyhow::Result<()> {
+pub(crate) fn register(
+    runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>,
+    _component_bucket: &mut ComponentBucket,
+) -> anyhow::Result<()> {
     runtime_builder.register_prototype(
         "metric_card",
         "src/templates/metrics/metric_card.aml",
