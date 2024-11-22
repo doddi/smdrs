@@ -27,12 +27,12 @@ pub(crate) enum OrderBy {
 // Response
 #[derive(Deserialize)]
 pub(crate) struct QuarantinedComponentResponse {
-    total: usize,
-    page: usize,
+    pub total: usize,
+    pub page: usize,
     #[serde(rename = "pageSize")]
-    page_size: usize,
+    pub page_size: usize,
     #[serde(rename = "pageCount")]
-    page_count: usize,
+    pub page_count: usize,
     pub results: Vec<QuarantinedComponentData>,
 }
 
@@ -49,7 +49,7 @@ pub(crate) struct QuarantinedComponentData {
     pub repository_name: String,
     #[serde(rename = "quarantineDate")]
     pub quarantine_date: String,
-    quarantined: bool,
+    pub quarantined: bool,
 }
 
 #[derive(Deserialize)]

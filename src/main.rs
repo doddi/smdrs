@@ -7,10 +7,19 @@ use crate::logging::LogLevel;
 use clap::Parser;
 use tracing::trace;
 
+#[derive(Clone, Debug, clap::ValueEnum)]
+enum ClientType {
+    Dummy,
+    Firewall,
+}
+
 #[derive(Debug, Parser)]
 struct Args {
     #[clap(short, long)]
     log_level: Option<LogLevel>,
+
+    #[arg(value_enum)]
+    client_type: ClientType,
 }
 
 fn main() -> anyhow::Result<()> {
@@ -21,5 +30,5 @@ fn main() -> anyhow::Result<()> {
 
     // TODO Setup puffin
 
-    application::start()
+    application::start(args.client_type)
 }

@@ -1,18 +1,14 @@
 use std::collections::HashMap;
 
-use anathema::component::ComponentId;
-use reqwest::Url;
-use smol::channel::{Receiver, Sender};
+use smol::channel::Receiver;
 use tracing::trace;
 
 use self::component_bucket::ComponentBucket;
 
-use super::api::firewall_client::{
-    FirewallClient, FirewallDashboardMetric, FirewallDashboardMetrics,
-};
 use super::api::quarantine_message::{
-    QuarantinedComponentData, QuarantinedComponentRequestList, QuarantinedComponentResponse,
+    QuarantinedComponentRequestList, QuarantinedComponentResponse,
 };
+use super::api::{FirewallDashboardMetric, FirewallDashboardMetrics, SMDClient};
 use super::component_bucket;
 use crate::components::metrics::metric_dashboard::MetricsDashboardMessage;
 use crate::components::quarantine::quarantine_table::{
@@ -20,40 +16,35 @@ use crate::components::quarantine::quarantine_table::{
 };
 
 pub(crate) struct Middleware {
-    client: FirewallClient,
-    tx: Sender<FirewalClientMessageHandler>,
+    client: Box<dyn SMDClient>,
 }
 
 impl Middleware {
-    pub(crate) fn new() -> Self {
-        let (tx, rx) = smol::channel::unbounded::<FirewalClientMessageHandler>();
-        let url = Url::parse("http://192.168.1.181:8070/").expect("valid url");
-
-        Self {
-            client: FirewallClient::new(url, rx),
-            tx,
-        }
+    pub(crate) fn new(client: Box<dyn SMDClient>) -> Self {
+        Self { client }
     }
 
-    pub async fn get_quarantined_components(
+    pub fn get_quarantined_components(
         &self,
         request: QuarantinedComponentRequestList,
     ) -> anyhow::Result<QuarantinedComponentResponse> {
-        self.client.get_quarantined_components(request).await
+        self.client.get_quarantined_components(request)
     }
 
-    pub async fn get_metrics(&self) -> anyhow::Result<FirewallDashboardMetrics> {
-        self.client.get_dashboard_metrics().await
+    pub fn get_metrics(&self) -> anyhow::Result<FirewallDashboardMetrics> {
+        self.client.get_dashboard_metrics()
     }
 
     pub(crate) fn serve(
         emitter: anathema::component::Emitter,
         rx: Receiver<FirewalClientMessageHandler>,
         component_bucket: ComponentBucket,
+        client: Box<dyn SMDClient>,
     ) {
         trace!("Starting middleware listener");
+        let middleware = Middleware::new(client);
+
         smol::spawn(async move {
-            let middleware = Middleware::new();
             trace!("Started middleware listener");
 
             while let Ok(message) = rx.recv().await {
@@ -61,7 +52,7 @@ impl Middleware {
 
                 match message {
                     FirewalClientMessageHandler::GetQuarantinedComponents(request) => {
-                        match middleware.get_quarantined_components(request).await {
+                        match middleware.get_quarantined_components(request) {
                             Ok(response) => {
                                 let component_id =
                                     component_bucket.quarantine_table.expect("quarantine_table");
@@ -70,7 +61,7 @@ impl Middleware {
                             Err(_) => panic!(),
                         }
                     }
-                    FirewalClientMessageHandler::Metrics => match middleware.get_metrics().await {
+                    FirewalClientMessageHandler::Metrics => match middleware.get_metrics() {
                         Ok(response) => {
                             let component_id = component_bucket
                                 .metrics_dashboard
@@ -114,7 +105,7 @@ impl From<FirewallDashboardMetrics> for MetricsDashboardMessage {
 
 fn get_from_metric_map(map: &HashMap<String, FirewallDashboardMetric>, item: &'static str) -> u64 {
     map.get(item)
-        .expect("metric available")
+        .expect(format!("metric available: {} not found", item.to_string()).as_str())
         .firewall_metrics_value
 }
 

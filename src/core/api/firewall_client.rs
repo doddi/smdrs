@@ -2,34 +2,30 @@ use std::collections::HashMap;
 
 use anyhow::anyhow;
 use reqwest::Url;
-use serde::Deserialize;
-use smol::channel::Receiver;
 use tracing::{debug, trace, warn};
 
-use crate::core::{
-    api::quarantine_message::QuarantinedComponentResponse, middleware::FirewalClientMessageHandler,
-};
+use crate::core::api::quarantine_message::QuarantinedComponentResponse;
 
-use super::quarantine_message::QuarantinedComponentRequestList;
+use super::{quarantine_message::QuarantinedComponentRequestList, SMDClient};
 
 pub(crate) struct FirewallClient {
     url: Url,
     http_client: reqwest::blocking::Client,
-    rx: smol::channel::Receiver<FirewalClientMessageHandler>,
 }
 
 impl FirewallClient {
-    pub(crate) fn new(url: Url, rx: Receiver<FirewalClientMessageHandler>) -> Self {
+    pub(crate) fn new(url: Url) -> Self {
         Self {
             url,
             http_client: reqwest::blocking::Client::new(),
-            rx,
         }
     }
+}
 
-    pub(crate) async fn get_quarantined_components(
+impl SMDClient for FirewallClient {
+    fn get_quarantined_components(
         &self,
-        request: QuarantinedComponentRequestList,
+        _request: QuarantinedComponentRequestList,
     ) -> anyhow::Result<QuarantinedComponentResponse> {
         trace!(
             "Sending get_quarantined_component request to Firewall: {}",
@@ -77,7 +73,7 @@ impl FirewallClient {
         }
     }
 
-    pub(crate) async fn get_dashboard_metrics(&self) -> anyhow::Result<FirewallDashboardMetrics> {
+    fn get_dashboard_metrics(&self) -> anyhow::Result<super::FirewallDashboardMetrics> {
         let builder = self
             .http_client
             .get(
@@ -100,11 +96,11 @@ impl FirewallClient {
 
                 let content = response.text().expect("a body");
 
-                let map: HashMap<String, FirewallDashboardMetric> =
+                let map: HashMap<String, super::FirewallDashboardMetric> =
                     serde_json::from_str(&content).expect("valid json as a map");
                 trace!("{:?}", map);
 
-                Ok(FirewallDashboardMetrics { map })
+                Ok(super::FirewallDashboardMetrics { map })
             }
             Err(err) => {
                 warn!("Error from backend {}", err);
@@ -115,17 +111,4 @@ impl FirewallClient {
             }
         }
     }
-}
-
-#[derive(Debug, Deserialize)]
-pub struct FirewallDashboardMetrics {
-    pub map: HashMap<String, FirewallDashboardMetric>,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct FirewallDashboardMetric {
-    #[serde(rename = "firewallMetricsValue")]
-    pub firewall_metrics_value: u64,
-    #[serde(rename = "latestUpdatedTime")]
-    latest_updated_time: Option<String>,
 }
