@@ -1,5 +1,14 @@
+//let active = 0
+
+let a = 1
+let options = [SMD_THEME.fg_normal, SMD_THEME.fg_active]
+let fg = options[active]
+
+text active
+text fg
+text options[active]
 zstack
-  border [foreground: SMD_THEME.fg_normal, border_style: SMD_STYLE.border, min_width: 50]
+  border [foreground: options[a], border_style: SMD_STYLE.border, min_width: 50]
     $children
   padding [left: 2]
     text " " title " "

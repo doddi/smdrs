@@ -28,6 +28,23 @@ impl Component for QuarantineTable {
 
     type Message = QuarantineTableMessage;
 
+    fn on_focus(
+        &mut self,
+        _state: &mut Self::State,
+        mut _elements: anathema::widgets::Elements<'_, '_>,
+        mut _context: Context<'_, Self::State>,
+    ) {
+        let _ = self
+            .tx
+            .try_send(FirewalClientMessageHandler::GetQuarantinedComponents(
+                QuarantinedComponentRequestList {
+                    page: Some(0),
+                    page_size: Some(100),
+                    sort_by: Some(QuarantineOrderBy::Component(OrderBy::Ascending)),
+                },
+            ));
+    }
+
     fn on_key(
         &mut self,
         key: anathema::component::KeyEvent,
@@ -67,16 +84,6 @@ impl Component for QuarantineTable {
             let row: QuarantineRowState = ele.into();
             state.rows.push(row);
         }
-    }
-
-    fn receive(
-        &mut self,
-        _ident: &str,
-        _value: anathema::state::CommonVal<'_>,
-        _state: &mut Self::State,
-        mut _elements: anathema::widgets::Elements<'_, '_>,
-        mut _context: Context<'_, Self::State>,
-    ) {
     }
 
     fn accept_focus(&self) -> bool {

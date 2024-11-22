@@ -2,7 +2,7 @@
   $children
     vstack
       @quarantine_header
-      border
+      border [foreground: SMD_THEME.fg_normal, border_style: SMD_STYLE.border]
         vstack
           for row in rows
             @quarantine_row { threat: row.threat, policy: row.policy_name, quarantine_time: row.quarantine_time, component_name: row.component_name, repository_name: row.repository_name }
