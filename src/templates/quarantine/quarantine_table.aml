@@ -1,8 +1,10 @@
-@titled_border {title: "Components Actively in Quarantine"}
-  $children
+vstack
+  @quarantine_header
+  border [foreground: SMD_THEME.border_normal, border_style: SMD_STYLE.border]
     vstack
-      @quarantine_header
-      border [foreground: SMD_THEME.fg_normal, border_style: SMD_STYLE.border]
-        vstack
-          for row in rows
-            @quarantine_row { threat: row.threat, policy: row.policy_name, quarantine_time: row.quarantine_time, component_name: row.component_name, repository_name: row.repository_name }
+      for row in rows
+        @quarantine_row { threat: row.threat, policy: row.policy_name, quarantine_time: row.quarantine_time, component_name: row.component_name, repository_name: row.repository_name }
+  hstack
+    spacer
+    text "page " page " of " page_count 
+    spacer

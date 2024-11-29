@@ -34,6 +34,7 @@ impl Component for QuarantineTable {
         mut _elements: anathema::widgets::Elements<'_, '_>,
         mut _context: Context<'_, Self::State>,
     ) {
+        trace!("Quarantintable got focus");
         let _ = self
             .tx
             .try_send(FirewalClientMessageHandler::GetQuarantinedComponents(
@@ -78,8 +79,13 @@ impl Component for QuarantineTable {
         mut _elements: anathema::widgets::Elements<'_, '_>,
         mut _context: Context<'_, Self::State>,
     ) {
+        trace!("received quarantine table update message");
         state.rows = List::empty();
-        trace!("received count of {}", message.row_count);
+
+        *state.page_count.to_mut() = message.page_count;
+        *state.page_size.to_mut() = message.page_size;
+        *state.page.to_mut() = message.page;
+        *state.total.to_mut() = message.total;
         for ele in message.rows {
             let row: QuarantineRowState = ele.into();
             state.rows.push(row);
@@ -87,7 +93,7 @@ impl Component for QuarantineTable {
     }
 
     fn accept_focus(&self) -> bool {
-        true
+        false
     }
 }
 
@@ -109,22 +115,34 @@ pub(crate) fn register(
 
 #[derive(State)]
 pub struct QuarantineTableState {
+    active_row: Value<u8>,
+
+    total: Value<usize>,
+    page: Value<usize>,
+    page_size: Value<usize>,
+    page_count: Value<usize>,
     rows: Value<List<QuarantineRowState>>,
 }
 
 impl QuarantineTableState {
     fn new() -> Self {
         Self {
-            rows: Self::build_initial_rows(),
+            active_row: Value::new(0),
+
+            total: Value::new(4),
+            page: Value::new(1),
+            page_size: Value::new(4),
+            page_count: Value::new(1),
+            rows: Self::build_initial_rows(4),
         }
     }
 
-    fn build_initial_rows() -> Value<List<QuarantineRowState>> {
+    fn build_initial_rows(count: usize) -> Value<List<QuarantineRowState>> {
         let mut list = List::empty();
 
-        for ele in 0..4 {
+        for ele in 0..count {
             let row = QuarantineRowState {
-                threat: Value::new(10 - ele),
+                threat: Value::new(10 - ele as u8),
                 policy_name: Value::new("mine".to_string()),
                 quarantine_time: Value::new("some time".to_string()),
                 component_name: Value::new("component".to_string()),
@@ -159,7 +177,11 @@ impl From<QuarantineRowMessage> for QuarantineRowState {
 
 #[derive(Debug)]
 pub struct QuarantineTableMessage {
-    pub row_count: usize,
+    pub total: usize,
+    pub page: usize,
+    pub page_size: usize,
+    pub page_count: usize,
+
     pub rows: Vec<QuarantineRowMessage>,
 }
 

@@ -56,9 +56,11 @@ impl Middleware {
                             Ok(response) => {
                                 let component_id =
                                     component_bucket.quarantine_table.expect("quarantine_table");
-                                let _ = emitter.emit(component_id, response.into());
+                                let value = response.into();
+                                trace!("Response: {:?}", value);
+                                let _ = emitter.emit(component_id, value);
                             }
-                            Err(_) => panic!(),
+                            Err(_) => panic!("Nope"),
                         }
                     }
                     FirewalClientMessageHandler::Metrics => match middleware.get_metrics() {
@@ -111,7 +113,6 @@ fn get_from_metric_map(map: &HashMap<String, FirewallDashboardMetric>, item: &'s
 
 impl From<QuarantinedComponentResponse> for QuarantineTableMessage {
     fn from(value: QuarantinedComponentResponse) -> Self {
-        let row_count = value.results.len();
         let rows = value
             .results
             .into_iter()
@@ -123,7 +124,13 @@ impl From<QuarantinedComponentResponse> for QuarantineTableMessage {
                 repository_name: row.repository_name,
             })
             .collect();
-        QuarantineTableMessage { row_count, rows }
+        QuarantineTableMessage {
+            rows,
+            total: value.total,
+            page: value.page,
+            page_size: value.page_size,
+            page_count: value.page_count,
+        }
     }
 }
 

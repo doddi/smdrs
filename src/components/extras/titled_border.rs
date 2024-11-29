@@ -16,7 +16,7 @@ impl Component for TitledBorder {
     type Message = ();
 
     fn accept_focus(&self) -> bool {
-        false
+        true
     }
 
     fn on_blur(
@@ -30,11 +30,26 @@ impl Component for TitledBorder {
 
     fn on_focus(
         &mut self,
+        _state: &mut Self::State,
+        mut _elements: anathema::widgets::Elements<'_, '_>,
+        mut _context: anathema::prelude::Context<'_, Self::State>,
+    ) {
+        // *state.active.to_mut() = 1;
+    }
+
+    fn receive(
+        &mut self,
+        ident: &str,
+        _value: anathema::state::CommonVal<'_>,
         state: &mut Self::State,
         mut _elements: anathema::widgets::Elements<'_, '_>,
         mut _context: anathema::prelude::Context<'_, Self::State>,
     ) {
-        *state.active.to_mut() = 1;
+        if ident == "got_focus" {
+            *state.active.to_mut() = 1;
+        } else if ident == "lost_focus" {
+            *state.active.to_mut() = 0;
+        }
     }
 }
 

@@ -1,12 +1,12 @@
 @titled_border { title: "Component Data Insights" }
   $children
     vstack
-//      text supply_chain_attacks
-//      text components_quarantined
-//      text components_auto_selected
-//      text namespace_attacks
-//      text components_auto_released
-//      text components_waived
+      text "supply chain attacks " supply_chain_attacks
+      text "components quarantined " components_quarantined
+      text "components auto selected " components_auto_selected
+      text "namespace attacks " namespace_attacks
+      text "components auto released " components_auto_released
+      text "components waivd " components_waived
 
       container [height: 5]
         hstack

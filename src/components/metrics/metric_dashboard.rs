@@ -51,7 +51,7 @@ impl Component for MetricsDashboard {
         match key.get_char() {
             Some(ch) => {
                 if ch == 'r' || ch == 'R' {
-                    trace!("Sending a dashbaord metrics request from key press");
+                    trace!("Sending a dashboard metrics request from key press");
                     let _ = self.tx.try_send(FirewalClientMessageHandler::Metrics);
                 }
             }
@@ -71,7 +71,7 @@ impl Component for MetricsDashboard {
         state.components_quarantined = Value::new(message.components_quarantined);
         state.supply_chain_attacks = Value::new(message.supply_chain_attacks);
         state.namespace_attacks = Value::new(message.namespace_attacks);
-        state.components_auto_selected = Value::new(message.components_auto_selected);
+        state.components_auto_selected = Value::new(99); //Value::new(message.components_auto_selected);
     }
 }
 

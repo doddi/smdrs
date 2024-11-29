@@ -3,18 +3,45 @@ let SMD_STYLE = {
 }
 
 let SMD_THEME = {
-  fg_normal: "#666666"
-  fg_active: "#00DD66"
+  smd_bg: "#008866"
+  border_normal: "#666666"
+  border_active: "#00DD66"
   menu_highlight_bg: "#0000EE"
   menu_normal_bg: "#000000"
 }
 
-vstack
+
+@titled_border { title: "SMD RS" }
+  $children
+    vstack
+      text page
+      container [height: 1]
+        hstack [background: SMD_THEME.smd_bg, foreground: "white"]
+          expand
+            padding [left: 1]
+              text "(h)omepage"
+          expand
+            text "(r)epositories" 
+          expand
+            text "(m)etrics" 
+          expand
+            padding [right: 1]
+              text "(q)uarantined components"
+      spacer
+      if page == "metrics"
+        @metric_dashboard
+      else if page == "quarantine"
+        @quarantine_dashboard
+      else if page == "home"
+        text "home page"
+      spacer
+
+//vstack
 //  @repository_dashboard
 //  container [height: 3]
-  @metric_dashboard
-  container [height: 3]
-  @quarantine_table
-  spacer
+//  @metric_dashboard
+//  container [height: 3]
+//  @quarantine_table
+//  spacer
 
 
