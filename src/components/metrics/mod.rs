@@ -1,4 +1,4 @@
-use anathema::{prelude::TuiBackend, runtime::RuntimeBuilder};
+use anathema::runtime::Builder;
 use smol::channel::Sender;
 
 use crate::core::{component_bucket, middleware::FirewalClientMessageHandler};
@@ -9,7 +9,7 @@ mod metric_card;
 pub(crate) mod metric_dashboard;
 
 pub(crate) fn register(
-    runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>,
+    runtime_builder: &mut Builder,
     tx: Sender<FirewalClientMessageHandler>,
     component_bucket: &mut ComponentBucket,
 ) -> anyhow::Result<()> {

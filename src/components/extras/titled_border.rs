@@ -1,7 +1,8 @@
+use anathema::component::{Children, Context};
+use anathema::state::AnyState;
 use anathema::{
     component::Component,
-    prelude::TuiBackend,
-    runtime::RuntimeBuilder,
+    runtime::Builder,
     state::{State, Value},
 };
 
@@ -22,8 +23,8 @@ impl Component for TitledBorder {
     fn on_blur(
         &mut self,
         _state: &mut Self::State,
-        mut _elements: anathema::widgets::Elements<'_, '_>,
-        mut _context: anathema::prelude::Context<'_, Self::State>,
+        mut _elements: Children<'_, '_>,
+        mut _context: Context<'_, Self::State>,
     ) {
         // *state.active.to_mut() = 0;
     }
@@ -31,8 +32,8 @@ impl Component for TitledBorder {
     fn on_focus(
         &mut self,
         _state: &mut Self::State,
-        mut _elements: anathema::widgets::Elements<'_, '_>,
-        mut _context: anathema::prelude::Context<'_, Self::State>,
+        mut _elements: Children<'_, '_>,
+        mut _context: Context<'_, Self::State>,
     ) {
         // *state.active.to_mut() = 1;
     }
@@ -40,10 +41,10 @@ impl Component for TitledBorder {
     fn receive(
         &mut self,
         ident: &str,
-        _value: anathema::state::CommonVal<'_>,
+        _value: &dyn AnyState,
         state: &mut Self::State,
-        mut _elements: anathema::widgets::Elements<'_, '_>,
-        mut _context: anathema::prelude::Context<'_, Self::State>,
+        mut _elements: Children<'_, '_>,
+        mut _context: Context<'_, Self::State>,
     ) {
         if ident == "got_focus" {
             *state.active.to_mut() = 1;
@@ -58,8 +59,8 @@ pub struct TitledBorderState {
     active: Value<u8>,
 }
 
-pub(crate) fn register(runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>) -> anyhow::Result<()> {
-    runtime_builder.register_prototype(
+pub(crate) fn register(runtime_builder: &mut Builder) -> anyhow::Result<()> {
+    runtime_builder.prototype(
         "titled_border",
         "src/templates/extras/titled_border.aml",
         || TitledBorder {

@@ -1,4 +1,8 @@
-use anathema::{component::Component, prelude::*, runtime::RuntimeBuilder};
+use anathema::{
+    component::Component,
+    runtime::Builder,
+    state::{State, Value},
+};
 
 #[derive(Default)]
 #[allow(dead_code)]
@@ -7,11 +11,16 @@ struct QuarantineRow {
     policy: String,
     quarantine_time: String,
     component_name: String,
-    repositiry_name: String,
+    repository_name: String,
+}
+
+#[derive(State)]
+struct QuarantineRowState {
+    active: Value<bool>,
 }
 
 impl Component for QuarantineRow {
-    type State = ();
+    type State = QuarantineRowState;
 
     type Message = ();
 
@@ -20,12 +29,14 @@ impl Component for QuarantineRow {
     }
 }
 
-pub(crate) fn register(runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>) -> anyhow::Result<()> {
-    runtime_builder.register_prototype(
+pub(crate) fn register(runtime_builder: &mut Builder) -> anyhow::Result<()> {
+    runtime_builder.prototype(
         "quarantine_row",
         "src/templates/quarantine/quarantine_row.aml",
         QuarantineRow::default,
-        || (),
+        || QuarantineRowState {
+            active: Value::new(false),
+        },
     )?;
     Ok(())
 }

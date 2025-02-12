@@ -1,9 +1,12 @@
+use std::u8;
+
 use anathema::{
     component::Component,
     prelude::*,
-    runtime::RuntimeBuilder,
+    runtime::Builder,
     state::{List, State, Value},
 };
+use anathema::component::{Children, KeyEvent};
 use smol::channel::Sender;
 use tracing::trace;
 
@@ -31,7 +34,7 @@ impl Component for QuarantineTable {
     fn on_focus(
         &mut self,
         _state: &mut Self::State,
-        mut _elements: anathema::widgets::Elements<'_, '_>,
+        mut _elements: Children<'_, '_>,
         mut _context: Context<'_, Self::State>,
     ) {
         trace!("Quarantintable got focus");
@@ -48,11 +51,14 @@ impl Component for QuarantineTable {
 
     fn on_key(
         &mut self,
-        key: anathema::component::KeyEvent,
-        _state: &mut Self::State,
-        mut _elements: anathema::widgets::Elements<'_, '_>,
+        key: KeyEvent,
+        state: &mut Self::State,
+        mut _elements: Children<'_, '_>,
         mut _context: Context<'_, Self::State>,
     ) {
+        let current_row: usize = state.active_row.copy_value().into();
+        let number_of_rows = state.rows.len();
+
         match key.get_char() {
             Some(ch) => {
                 if ch == 'r' || ch == 'R' {
@@ -66,6 +72,20 @@ impl Component for QuarantineTable {
                                     sort_by: Some(QuarantineOrderBy::Component(OrderBy::Ascending)),
                                 },
                             ));
+                } else if ch == 'j' || ch == 'J' {
+                    trace!("Next row");
+                    if current_row == number_of_rows - 1 {
+                        *state.active_row.to_mut() = 0;
+                    } else {
+                        *state.active_row.to_mut() = (current_row + 1) as u8;
+                    }
+                } else if ch == 'k' || ch == 'K' {
+                    trace!("Previous row");
+                    if current_row == 0 {
+                        *state.active_row.to_mut() = (number_of_rows - 1) as u8;
+                    } else {
+                        *state.active_row.to_mut() = (current_row - 1) as u8;
+                    }
                 }
             }
             None => todo!(),
@@ -76,11 +96,11 @@ impl Component for QuarantineTable {
         &mut self,
         message: Self::Message,
         state: &mut Self::State,
-        mut _elements: anathema::widgets::Elements<'_, '_>,
+        mut _elements: Children<'_, '_>,
         mut _context: Context<'_, Self::State>,
     ) {
         trace!("received quarantine table update message");
-        state.rows = List::empty();
+        state.rows = List::empty().into();
 
         *state.page_count.to_mut() = message.page_count;
         *state.page_size.to_mut() = message.page_size;
@@ -93,16 +113,16 @@ impl Component for QuarantineTable {
     }
 
     fn accept_focus(&self) -> bool {
-        false
+        true
     }
 }
 
 pub(crate) fn register(
-    runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>,
+    runtime_builder: &mut Builder,
     tx: Sender<FirewalClientMessageHandler>,
     bucket: &mut ComponentBucket,
 ) -> anyhow::Result<()> {
-    let component_id = runtime_builder.register_component(
+    let component_id = runtime_builder.component(
         "quarantine_table",
         "src/templates/quarantine/quarantine_table.aml",
         QuarantineTable::new(tx),
@@ -138,7 +158,7 @@ impl QuarantineTableState {
     }
 
     fn build_initial_rows(count: usize) -> Value<List<QuarantineRowState>> {
-        let mut list = List::empty();
+        let mut list = Value::empty();
 
         for ele in 0..count {
             let row = QuarantineRowState {

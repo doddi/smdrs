@@ -1,6 +1,8 @@
+use anathema::backend::Backend;
+use anathema::runtime::Builder;
 use anathema::{
     prelude::{Document, TuiBackend},
-    runtime::{Runtime, RuntimeBuilder},
+    runtime::Runtime,
 };
 use reqwest::Url;
 use smol::channel::Sender;
@@ -25,15 +27,16 @@ impl Application {
     }
 
     fn run(&self, client_type: ClientType) -> anyhow::Result<()> {
-        let tui = TuiBackend::builder()
+        let mut tui = TuiBackend::builder()
             .enable_alt_screen()
             .enable_raw_mode()
             .hide_cursor()
             .finish()?;
+        tui.finalize();
 
         let (tx, rx) = smol::channel::unbounded::<FirewalClientMessageHandler>();
 
-        let mut runtime_builder = Runtime::builder(Document::new("@smd"), tui);
+        let mut runtime_builder = Runtime::builder(Document::new("@smd"), &tui);
 
         let mut component_bucket = ComponentBucket::new();
 
@@ -50,15 +53,16 @@ impl Application {
 
         middleware::Middleware::serve(runtime_builder.emitter(), rx, component_bucket, client);
 
-        let mut runtime = runtime_builder.finish()?;
-        runtime.run();
+        runtime_builder.finish(|runtime| runtime.run(&mut tui))?;
+
+        println!("finished successfully");
 
         Ok(())
     }
 
     fn register_components(
         &self,
-        runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>,
+        runtime_builder: &mut Builder,
         tx: Sender<FirewalClientMessageHandler>,
         component_bucket: &mut ComponentBucket,
     ) -> anyhow::Result<()> {

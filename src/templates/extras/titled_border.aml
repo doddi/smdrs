@@ -4,5 +4,5 @@ zstack
   border [foreground: options[1], border_style: SMD_STYLE.border, min_width: 50]
     $children
   padding [left: 2]
-    text " " title " "
+    text " " attribute.title " "
 

@@ -11,29 +11,31 @@ let SMD_THEME = {
 }
 
 
-@titled_border { title: "SMD RS" }
+@titled_border [ title: "SMD RS" ]
   $children
     vstack
-      text page
+      text "page: " state.page
       container [height: 1]
         hstack [background: SMD_THEME.smd_bg, foreground: "white"]
           expand
             padding [left: 1]
               text "(h)omepage"
           expand
-            text "(r)epositories" 
+            text "(r)epositories"
           expand
-            text "(m)etrics" 
+            text "(m)etrics"
           expand
             padding [right: 1]
               text "(q)uarantined components"
       spacer
-      if page == "metrics"
+      if state.page == "metrics"
         @metric_dashboard
-      else if page == "quarantine"
+      else if state.page == "quarantine"
         @quarantine_dashboard
-      else if page == "home"
+      else if state.page == "home"
         text "home page"
+      else
+        text "unknown page"
       spacer
 
 //vstack

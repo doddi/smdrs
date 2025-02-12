@@ -1,4 +1,4 @@
-use anathema::{component::Component, prelude::*, runtime::RuntimeBuilder};
+use anathema::{component::Component, runtime::Builder};
 
 use super::{policy_header, policy_row, policy_table};
 
@@ -12,8 +12,8 @@ impl Component for PolicyDashboard {
     type Message = ();
 }
 
-pub(crate) fn register(runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>) -> anyhow::Result<()> {
-    runtime_builder.register_component(
+pub(crate) fn register(runtime_builder: &mut Builder) -> anyhow::Result<()> {
+    runtime_builder.component(
         "policy_dashboard",
         "src/templates/configuration/policy/policy_dashboard.aml",
         PolicyDashboard::default(),

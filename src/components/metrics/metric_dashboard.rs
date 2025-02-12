@@ -1,9 +1,10 @@
 use anathema::{
     component::Component,
     prelude::*,
-    runtime::RuntimeBuilder,
+    runtime::Builder,
     state::{State, Value},
 };
+use anathema::component::{Children, KeyEvent};
 use smol::channel::Sender;
 use tracing::trace;
 
@@ -34,7 +35,7 @@ impl Component for MetricsDashboard {
     fn on_focus(
         &mut self,
         _state: &mut Self::State,
-        mut _elements: anathema::widgets::Elements<'_, '_>,
+        mut _elements: Children<'_, '_>,
         mut _context: Context<'_, Self::State>,
     ) {
         trace!("Sending a dashboard metrics request from focus");
@@ -43,9 +44,9 @@ impl Component for MetricsDashboard {
 
     fn on_key(
         &mut self,
-        key: anathema::component::KeyEvent,
+        key: KeyEvent,
         _state: &mut Self::State,
-        mut _elements: anathema::widgets::Elements<'_, '_>,
+        mut _elements: Children<'_, '_>,
         mut _context: Context<'_, Self::State>,
     ) {
         match key.get_char() {
@@ -63,7 +64,7 @@ impl Component for MetricsDashboard {
         &mut self,
         message: Self::Message,
         state: &mut Self::State,
-        mut _elements: anathema::widgets::Elements<'_, '_>,
+        mut _elements: Children<'_, '_>,
         mut _context: Context<'_, Self::State>,
     ) {
         state.components_waived = Value::new(message.components_waived);
@@ -109,11 +110,11 @@ impl From<MetricsDashboardMessage> for MetricsDashboardState {
 }
 
 pub(crate) fn register(
-    runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>,
+    runtime_builder: &mut Builder,
     tx: Sender<FirewalClientMessageHandler>,
     component_bucket: &mut ComponentBucket,
 ) -> anyhow::Result<()> {
-    let component_id = runtime_builder.register_component(
+    let component_id = runtime_builder.component(
         "metric_dashboard",
         "src/templates/metrics/metric_dashboard.aml",
         MetricsDashboard::new(tx),

@@ -1,4 +1,4 @@
-use anathema::{prelude::TuiBackend, runtime::RuntimeBuilder};
+use anathema::runtime::Builder;
 use smol::channel::Sender;
 
 use crate::core::{component_bucket::ComponentBucket, middleware::FirewalClientMessageHandler};
@@ -9,7 +9,7 @@ mod quarantine_row;
 pub(crate) mod quarantine_table;
 
 pub(crate) fn register(
-    runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>,
+    runtime_builder: &mut Builder,
     tx: Sender<FirewalClientMessageHandler>,
     component_bucket: &mut ComponentBucket,
 ) -> anyhow::Result<()> {

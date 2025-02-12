@@ -1,4 +1,4 @@
-use anathema::{component::Component, prelude::*, runtime::RuntimeBuilder};
+use anathema::{component::Component, runtime::Builder};
 
 #[derive(Default)]
 #[allow(dead_code)]
@@ -10,8 +10,8 @@ impl Component for PolicyTable {
     type Message = ();
 }
 
-pub(crate) fn register(runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>) -> anyhow::Result<()> {
-    runtime_builder.register_component(
+pub(crate) fn register(runtime_builder: &mut Builder) -> anyhow::Result<()> {
+    runtime_builder.component(
         "policy_table",
         "src/templates/configuration/policy/policy_table.aml",
         PolicyTable::default(),

@@ -1,7 +1,6 @@
 use anathema::{
     component::Component,
-    prelude::TuiBackend,
-    runtime::RuntimeBuilder,
+    runtime::Builder,
     state::{State, Value},
 };
 
@@ -21,8 +20,8 @@ struct MenuItemState {
     active: Value<bool>,
 }
 
-pub(crate) fn register(runtime_builder: &mut RuntimeBuilder<TuiBackend, ()>) -> anyhow::Result<()> {
-    runtime_builder.register_prototype(
+pub(crate) fn register(runtime_builder: &mut Builder) -> anyhow::Result<()> {
+    runtime_builder.prototype(
         "menu_item",
         "src/templates/extras/menu_item.aml",
         || MenuItem {

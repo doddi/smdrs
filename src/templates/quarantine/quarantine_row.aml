@@ -1,7 +1,11 @@
 let rating = ["🟦", "🟦", "🟩", "🟩", "🟩", "🟨", "🟨", "🟨","🟧", "🟧", "🟥"]
 
+let quarantine_menu_options = [SMD_THEME.menu_normal_bg, SMD_THEME.menu_highlight_bg]
+
+let bg = quarantine_menu_options[0]
+
 container [height: 2]
-  hstack
+  hstack [background: bg]
     expand [factor: 1]
       padding [left: 1]
         text rating[threat] threat

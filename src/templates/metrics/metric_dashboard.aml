@@ -1,4 +1,4 @@
-@titled_border { title: "Component Data Insights" }
+@titled_border [ title: "Component Data Insights" ]
   $children
     vstack
       text "supply chain attacks " supply_chain_attacks
@@ -6,17 +6,17 @@
       text "components auto selected " components_auto_selected
       text "namespace attacks " namespace_attacks
       text "components auto released " components_auto_released
-      text "components waivd " components_waived
+      text "components waived " components_waived
 
       container [height: 5]
         hstack
-          @metric_card { title: "Supply chain attacks blocked", value: supply_chain_attacks, legend: "all time" }
-          @metric_card { title: "Components quarantined", value: components_quarantined, legend: "last 12 months" }
-          @metric_card { title: "Safe components auto-selected", value: components_auto_selected, legend: "last 12 months" }
+          @metric_card [ title: "Supply chain attacks blocked", value: supply_chain_attacks, legend: "all time" ]
+          @metric_card [ title: "Components quarantined", value: components_quarantined, legend: "last 12 months" ]
+          @metric_card [ title: "Safe components auto-selected", value: components_auto_selected, legend: "last 12 months" ]
 
       container [height: 5]
         hstack
-          @metric_card { title: "Namespace attacks blocked", value: namespace_attacks, legend: "all time" }
-          @metric_card { title: "Components auto-released", value: components_auto_released, legend: "last 12 months" }
-          @metric_card { title: "Components waived", value: components_waived, legend: "last 12 months" }
+          @metric_card [ title: "Namespace attacks blocked", value: namespace_attacks, legend: "all time" ]
+          @metric_card [ title: "Components auto-released", value: components_auto_released, legend: "last 12 months" ]
+          @metric_card [ title: "Components waived", value: components_waived, legend: "last 12 months" ]
 
