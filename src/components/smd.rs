@@ -61,13 +61,13 @@ pub(crate) struct AppState {
 }
 
 pub(crate) fn register(
-    runtime_builder: &mut Builder,
+    runtime_builder: &mut Builder<()>,
     tx: Sender<FirewalClientMessageHandler>,
     component_bucket: &mut ComponentBucket,
 ) -> anyhow::Result<()> {
     runtime_builder.component(
         "smd",
-        "src/templates/smd.aml",
+        "src/templates/test.aml",
         App {},
         AppState {
             page: Value::new("homepage".to_string()),

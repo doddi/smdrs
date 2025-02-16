@@ -59,7 +59,7 @@ pub struct TitledBorderState {
     active: Value<u8>,
 }
 
-pub(crate) fn register(runtime_builder: &mut Builder) -> anyhow::Result<()> {
+pub(crate) fn register(runtime_builder: &mut Builder<()>) -> anyhow::Result<()> {
     runtime_builder.prototype(
         "titled_border",
         "src/templates/extras/titled_border.aml",

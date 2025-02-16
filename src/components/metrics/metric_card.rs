@@ -1,5 +1,5 @@
-use anathema::{component::Component, runtime::Builder};
 use crate::core::component_bucket::ComponentBucket;
+use anathema::{component::Component, runtime::Builder};
 
 #[derive(Default)]
 #[allow(dead_code)]
@@ -20,7 +20,7 @@ impl Component for MetricCard {
 }
 
 pub(crate) fn register(
-    runtime_builder: &mut Builder,
+    runtime_builder: &mut Builder<()>,
     _component_bucket: &mut ComponentBucket,
 ) -> anyhow::Result<()> {
     runtime_builder.prototype(

@@ -9,7 +9,7 @@ mod metric_card;
 pub(crate) mod metric_dashboard;
 
 pub(crate) fn register(
-    runtime_builder: &mut Builder,
+    runtime_builder: &mut Builder<()>,
     tx: Sender<FirewalClientMessageHandler>,
     component_bucket: &mut ComponentBucket,
 ) -> anyhow::Result<()> {

@@ -10,7 +10,7 @@ impl Component for RepositoryList {
     type Message = ();
 }
 
-pub(crate) fn register(runtime_builder: &mut Builder) -> anyhow::Result<()> {
+pub(crate) fn register(runtime_builder: &mut Builder<()>) -> anyhow::Result<()> {
     runtime_builder.component(
         "repository_list",
         "src/templates/configuration/repository/repository_list.aml",

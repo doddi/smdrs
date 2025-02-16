@@ -1,0 +1,6 @@
+vstack
+  text state.page
+  @titled_border [ title: "test title" ]
+    $children
+      vstack
+        text "page: " state.page

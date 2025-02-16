@@ -20,7 +20,7 @@ struct MenuItemState {
     active: Value<bool>,
 }
 
-pub(crate) fn register(runtime_builder: &mut Builder) -> anyhow::Result<()> {
+pub(crate) fn register(runtime_builder: &mut Builder<()>) -> anyhow::Result<()> {
     runtime_builder.prototype(
         "menu_item",
         "src/templates/extras/menu_item.aml",

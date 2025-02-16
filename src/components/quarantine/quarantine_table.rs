@@ -1,12 +1,12 @@
 use std::u8;
 
+use anathema::component::{Children, KeyEvent};
 use anathema::{
     component::Component,
     prelude::*,
     runtime::Builder,
     state::{List, State, Value},
 };
-use anathema::component::{Children, KeyEvent};
 use smol::channel::Sender;
 use tracing::trace;
 
@@ -118,7 +118,7 @@ impl Component for QuarantineTable {
 }
 
 pub(crate) fn register(
-    runtime_builder: &mut Builder,
+    runtime_builder: &mut Builder<()>,
     tx: Sender<FirewalClientMessageHandler>,
     bucket: &mut ComponentBucket,
 ) -> anyhow::Result<()> {

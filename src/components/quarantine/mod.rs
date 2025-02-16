@@ -9,7 +9,7 @@ mod quarantine_row;
 pub(crate) mod quarantine_table;
 
 pub(crate) fn register(
-    runtime_builder: &mut Builder,
+    runtime_builder: &mut Builder<()>,
     tx: Sender<FirewalClientMessageHandler>,
     component_bucket: &mut ComponentBucket,
 ) -> anyhow::Result<()> {

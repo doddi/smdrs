@@ -12,7 +12,7 @@ impl Component for PolicyDashboard {
     type Message = ();
 }
 
-pub(crate) fn register(runtime_builder: &mut Builder) -> anyhow::Result<()> {
+pub(crate) fn register(runtime_builder: &mut Builder<()>) -> anyhow::Result<()> {
     runtime_builder.component(
         "policy_dashboard",
         "src/templates/configuration/policy/policy_dashboard.aml",

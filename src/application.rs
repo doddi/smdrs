@@ -62,7 +62,7 @@ impl Application {
 
     fn register_components(
         &self,
-        runtime_builder: &mut Builder,
+        runtime_builder: &mut Builder<()>,
         tx: Sender<FirewalClientMessageHandler>,
         component_bucket: &mut ComponentBucket,
     ) -> anyhow::Result<()> {

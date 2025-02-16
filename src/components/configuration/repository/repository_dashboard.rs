@@ -10,7 +10,7 @@ impl Component for RepositoryDashboard {
     type Message = ();
 }
 
-pub(crate) fn register(runtime_builder: &mut Builder) -> anyhow::Result<()> {
+pub(crate) fn register(runtime_builder: &mut Builder<()>) -> anyhow::Result<()> {
     runtime_builder.component(
         "repository_dashboard",
         "src/templates/configuration/repository/repository_dashboard.aml",

@@ -10,33 +10,34 @@ let SMD_THEME = {
   menu_normal_bg: "#000000"
 }
 
-
-@titled_border [ title: "SMD RS" ]
-  $children
-    vstack
-      text "page: " state.page
-      container [height: 1]
-        hstack [background: SMD_THEME.smd_bg, foreground: "white"]
-          expand
-            padding [left: 1]
-              text "(h)omepage"
-          expand
-            text "(r)epositories"
-          expand
-            text "(m)etrics"
-          expand
-            padding [right: 1]
-              text "(q)uarantined components"
-      spacer
-      if state.page == "metrics"
-        @metric_dashboard
-      else if state.page == "quarantine"
-        @quarantine_dashboard
-      else if state.page == "home"
-        text "home page"
-      else
-        text "unknown page"
-      spacer
+vstack
+  text "1: " state.page
+  @titled_border [ title: "SMD RS" ]
+    $children
+      vstack
+        text "page: " state.page
+        container [height: 1]
+          hstack [background: SMD_THEME.smd_bg, foreground: "white"]
+            expand
+              padding [left: 1]
+                text "(h)omepage"
+            expand
+              text "(r)epositories"
+            expand
+              text "(m)etrics"
+            expand
+              padding [right: 1]
+                text "(q)uarantined components"
+        spacer
+        if state.page == "metrics"
+          @metric_dashboard
+        else if state.page == "quarantine"
+          @quarantine_dashboard
+        else if state.page == "home"
+          text "home page"
+        else
+          text "unknown page"
+        spacer
 
 //vstack
 //  @repository_dashboard

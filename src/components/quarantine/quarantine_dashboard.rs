@@ -8,7 +8,7 @@ impl Component for QuarantineDashboard {
     type Message = ();
 }
 
-pub(crate) fn register(runtime_builder: &mut Builder) -> anyhow::Result<()> {
+pub(crate) fn register(runtime_builder: &mut Builder<()>) -> anyhow::Result<()> {
     runtime_builder.component(
         "quarantine_dashboard",
         "src/templates/quarantine/quarantine_dashboard.aml",

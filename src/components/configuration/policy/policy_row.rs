@@ -10,7 +10,7 @@ impl Component for PolicyRow {
     type Message = ();
 }
 
-pub(crate) fn register(runtime_builder: &mut Builder) -> anyhow::Result<()> {
+pub(crate) fn register(runtime_builder: &mut Builder<()>) -> anyhow::Result<()> {
     runtime_builder.prototype(
         "policy_row",
         "src/templates/configuration/policy/policy_row.aml",
